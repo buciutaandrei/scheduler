@@ -35,21 +35,10 @@ const MainPage = props => {
         <LoadingOverlay active={props.loading} spinner>
           <div className="appWrapper flex flex-wrap">
             <LeftPanel />
-            <Fab
-              className=""
-              style={{
-                backgroundColor: "#74adff",
-                color: "white",
-                position: "absolute",
-                top: "1rem",
-                right: "2rem",
-                height: "auto",
-                width: "auto"
-              }}
-              onClick={() => props.fetchProgramari(props.selectedDate)}
-            >
-              <RefreshIcon className="ma2" style={{ fontSize: "2.5rem" }} />
-            </Fab>
+            <div
+              className="panelFiller"
+              style={{ height: "100%", width: "23rem" }}
+            ></div>
             <div className="tableWrapper">
               <div
                 style={{
@@ -71,7 +60,7 @@ const MainPage = props => {
                   gridRowStart: "1"
                 }}
               >
-                Cabinetul 1
+                Cab. 1
               </div>
               <div
                 className="f4 tc"
@@ -81,7 +70,7 @@ const MainPage = props => {
                   gridRowStart: "1"
                 }}
               >
-                Cabinetul 2
+                Cab. 2
               </div>
               <div
                 className="f4 tc"
@@ -91,7 +80,7 @@ const MainPage = props => {
                   gridRowStart: "1"
                 }}
               >
-                Cabinetul 3
+                Cab. 3
               </div>
               <AppointmentCards />
             </div>

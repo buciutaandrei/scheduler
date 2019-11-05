@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import DatePicker from "../../Components/DatePicker/DatePicker.js";
 import "tachyons";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { connect } from "react-redux";
 import { toggleAddModal, loggingOut } from "../../actions/index";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import "./LeftPanel.css";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -16,62 +18,94 @@ const mapDispatchToProps = dispatch => {
 
 const LeftPanel = props => {
   const emptyState = { nume: "", prenume: "", telefon: "" };
+  const [drawer, toggleDrawer] = useState(true);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        backgroundColor: "#357edd",
-        height: "100%",
-        width: "auto",
-        zIndex: "10"
-      }}
-      className="shadow-5"
-    >
-      <div
-        style={{
-          backgroundColor: "#fafafa",
-          borderRadius: "10%",
-          zIndex: "20",
-          height: "max-content"
-        }}
-        className="ma4 pa3 shadow-3"
+    <div>
+      <SwipeableDrawer
+        open={drawer}
+        onOpen={() => toggleDrawer(true)}
+        onClose={() => toggleDrawer(false)}
+        className="swipeDrawer"
       >
-        <DatePicker />
+        <div className="shadow-5 leftPanelSwipe">
+          <div className="datePickerWrapper ma4 pa3 shadow-3">
+            <DatePicker />
+          </div>
+          <Button
+            style={{
+              position: "absolute",
+              padding: "1.5rem",
+              bottom: "0",
+              left: "0",
+              width: "23rem",
+              height: "2rem",
+              color: "#fafafa",
+              letterSpacing: "2px",
+              zIndex: "20"
+            }}
+            onClick={props.loggingOut}
+          >
+            Log out
+          </Button>
+          <Fab
+            className="addFab"
+            aria-label="add"
+            style={{
+              position: "absolute",
+              top: "1rem",
+              left: "21rem",
+              backgroundColor: "#74adff",
+              color: "white",
+              width: "4rem",
+              height: "4rem",
+              zIndex: "20"
+            }}
+            onClick={() => props.toggleAddModal(emptyState)}
+          >
+            <AddIcon style={{ fontSize: "2.5rem" }} />
+          </Fab>
+        </div>
+      </SwipeableDrawer>
+
+      <div className="shadow-5 leftPanelWrapper">
+        <div className="datePickerWrapper ma4 pa3 shadow-3">
+          <DatePicker />
+        </div>
+        <Button
+          style={{
+            position: "absolute",
+            padding: "1.5rem",
+            bottom: "0",
+            left: "0",
+            width: "23rem",
+            height: "2rem",
+            color: "#fafafa",
+            letterSpacing: "2px",
+            zIndex: "20"
+          }}
+          onClick={props.loggingOut}
+        >
+          Log out
+        </Button>
+        <Fab
+          className="addFab"
+          aria-label="add"
+          style={{
+            position: "absolute",
+            top: "1rem",
+            left: "21rem",
+            backgroundColor: "#74adff",
+            color: "white",
+            width: "4rem",
+            height: "4rem",
+            zIndex: "20"
+          }}
+          onClick={() => props.toggleAddModal(emptyState)}
+        >
+          <AddIcon style={{ fontSize: "2.5rem" }} />
+        </Fab>
       </div>
-      <Button
-        style={{
-          position: "absolute",
-          padding: "1.5rem",
-          bottom: "0",
-          left: "0",
-          width: "23rem",
-          height: "2rem",
-          color: "#fafafa",
-          letterSpacing: "2px",
-          zIndex: "20"
-        }}
-        onClick={props.loggingOut}
-      >
-        Log out
-      </Button>
-      <Fab
-        aria-label="add"
-        style={{
-          position: "absolute",
-          top: "1rem",
-          left: "21rem",
-          backgroundColor: "#74adff",
-          color: "white",
-          width: "4rem",
-          height: "4rem",
-          zIndex: "20"
-        }}
-        onClick={() => props.toggleAddModal(emptyState)}
-      >
-        <AddIcon style={{ fontSize: "2.5rem" }} />
-      </Fab>
     </div>
   );
 };

@@ -7,12 +7,14 @@
   align-items: center;
   width: 100%;
   z-index: 0;
+  height: min-content;
+  position: relative;
 }
 
 ._loading_overlay_wrapper {
   display: flex;
   align-content: center;
-  height: 100vh;
+  height: max-content;
   width: 100vw;
 }
 
@@ -32,12 +34,6 @@
   align-self: flex-start;
 }
 
-@media screen and (max-width: 800px) {
-  .tableWrapper {
-    max-width: 100%;
-  }
-}
-
 .programare {
   margin-top: -3px;
   margin-bottom: -2px;
@@ -50,4 +46,16 @@
 
 .programare:hover {
   z-index: 30 !important;
+}
+
+@media (max-width: 1000px) {
+  .tableWrapper {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .panelFiller {
+    display: none;
+  }
 }
