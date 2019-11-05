@@ -1,0 +1,7 @@
+.tableBackground {
+  padding: 0px;
+}
+
+.trBackground:nth-child(even) {
+  background-color: #f2f2f2;
+}

@@ -1,0 +1,39 @@
+.deleteIcon,
+.editIcon {
+  display: none;
+  position: absolute;
+  bottom: 0.2rem;
+}
+
+.deleteIcon {
+  right: 0.2rem;
+}
+
+.editIcon {
+  left: 0.2rem;
+}
+
+.deleteIcon :active {
+  transform: scale(0.9);
+}
+
+.editIcon :active {
+  transform: scale(0.9);
+}
+
+.programare {
+  transition: all 0.3s ease-in-out;
+  color: #fafafa;
+}
+
+.programare:hover {
+  transform: scale(1.05);
+}
+
+.programare:hover .deleteIcon {
+  display: block;
+}
+
+.programare:hover .editIcon {
+  display: block;
+}
