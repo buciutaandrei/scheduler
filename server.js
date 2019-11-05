@@ -47,6 +47,7 @@ MongoClient.connect(
       });
 
       socket.on("fetchItems", collection => {
+        console.log('fetchItems')
         db.collection(collection)
           .find({})
           .toArray((err, result) => {
