@@ -28,7 +28,7 @@ MongoClient.connect(
   { useUnifiedTopology: true },
   (err, client) => {
     if (err) return console.log(err);
-    db = client.db("proiect");
+    db = client.db();
 
     db.on("error", error => console.error(error));
     db.once("open", () => console.log("connected to database"));
