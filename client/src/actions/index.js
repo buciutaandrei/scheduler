@@ -23,7 +23,7 @@ import setAuthToken from "../Containers/LoginPage/setAuthToken";
 import jwt_decode from "jwt-decode";
 import io from "socket.io-client";
 
-let socket = io.connect();
+let socket = io.connect("/");
 
 export function userLogging(payload) {
   return dispatch => {

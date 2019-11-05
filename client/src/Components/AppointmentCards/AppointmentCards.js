@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => {
 const AppointmentCards = props => {
   useEffect(() => {
     props.fetchProgramari(props.selectedDate);
-    const socket = io.connect();
+    const socket = io.connect("/");
     socket.on("dataFetch", input => {
       props.setProgramari(input);
     });
