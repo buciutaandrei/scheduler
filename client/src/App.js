@@ -32,7 +32,7 @@ const App = props => {
     }
   }
 
-  if (props.loggedIn) {
+  if (true) {
     return <MainPage />;
   } else {
     return <LoginPage />;
