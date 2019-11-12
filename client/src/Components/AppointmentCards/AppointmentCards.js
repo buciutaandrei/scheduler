@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { hoursArray } from "../../Components/DataTables/hoursArray";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import "./AppointmentCards.css";
-import { deleteProgramare, toggleAddModal } from "../../actions/index";
+import { toggleAddModal } from "../../actions/index";
 import moment from "moment";
 
 const mapStateToProps = state => {
@@ -16,13 +14,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteProgramare: programare => dispatch(deleteProgramare(programare)),
     toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal))
   };
 };
 
 const AppointmentCards = props => {
-  const { programari, selectedDate, deleteProgramare } = props;
+  const { programari, selectedDate } = props;
 
   const handleEdit = event => {
     props.toggleAddModal(
@@ -33,15 +30,6 @@ const AppointmentCards = props => {
         cabinet: ""
       })
     );
-  };
-
-  const handleDelete = event => {
-    const payload = Object.assign(
-      {},
-      { selectedDate: selectedDate },
-      { id: event }
-    );
-    deleteProgramare(payload);
   };
 
   const doctorName = data => {
@@ -71,10 +59,8 @@ const AppointmentCards = props => {
       let bgColor = `bg-${programare.medic}`;
       const medic = doctorName(programare.medic);
       let style = {};
-      let iconStyle = {};
       let cellStyle = {};
       if (durata === "1") {
-        iconStyle = { bottom: "0.5rem" };
         style = {
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",

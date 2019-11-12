@@ -137,7 +137,7 @@ const WeekPanel = props => {
           <Fab
             style={{
               position: "absolute",
-              top: "1rem",
+              bottom: "1rem",
               right: "1rem",
               backgroundColor: "#74adff",
               color: "white",
@@ -155,7 +155,7 @@ const WeekPanel = props => {
           style={{
             position: "absolute",
             top: "1rem",
-            left: "1rem",
+            right: "1rem",
             backgroundColor: "#74adff",
             color: "white",
             width: "4rem",

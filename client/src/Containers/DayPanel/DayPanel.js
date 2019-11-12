@@ -1,19 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import TableBackground from "../../Components/TableBackground/TableBackground";
 import HourRows from "../../Components/HourRows/HourRows";
 import AppointmentCards from "../../Components/AppointmentCards/AppointmentCards";
 import Loop from "@material-ui/icons/Loop";
 import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import { toggleAddModal } from "../../actions/index";
 
-const DayPanel = () => {
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal))
+  };
+};
+
+const DayPanel = props => {
+  const emptyState = { nume: "", prenume: "", telefon: "" };
+
   return (
     <React.Fragment>
       <Link to="/week">
         <Fab
           style={{
             position: "absolute",
-            top: "1rem",
+            bottom: "1rem",
             right: "1rem",
             backgroundColor: "#74adff",
             color: "white",
@@ -25,6 +36,23 @@ const DayPanel = () => {
           <Loop />
         </Fab>
       </Link>
+      <Fab
+        className="addFab"
+        aria-label="add"
+        style={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          backgroundColor: "#74adff",
+          color: "white",
+          width: "4rem",
+          height: "4rem",
+          zIndex: "20"
+        }}
+        onClick={() => props.toggleAddModal(emptyState)}
+      >
+        <AddIcon style={{ fontSize: "2.5rem" }} />
+      </Fab>
       <div className="tableWrapper">
         <div
           style={{
@@ -74,4 +102,7 @@ const DayPanel = () => {
   );
 };
 
-export default DayPanel;
+export default connect(
+  null,
+  mapDispatchToProps
+)(DayPanel);
