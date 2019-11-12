@@ -8,6 +8,8 @@ const users = require("./api/users");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const moment = require("moment");
+require("moment/locale/ro");
+moment.locale("ro");
 const path = require("path");
 
 require("dotenv").config();
@@ -47,7 +49,6 @@ MongoClient.connect(
       });
 
       socket.on("fetchItems", collection => {
-        console.log('fetchItems')
         db.collection(collection)
           .find({})
           .toArray((err, result) => {
@@ -68,17 +69,35 @@ MongoClient.connect(
       });
 
       socket.on("addItems", input => {
-        let date = moment(input.selectedDate).format("DDMMY");
+        let date = moment(input.selectedDate)
+          .startOf("week")
+          .format("DDMMY");
         db.collection(date)
           .insertOne(input)
           .then(data => io.sockets.emit("refresh", date));
       });
 
       socket.on("deleteItems", input => {
-        let date = moment(input.selectedDate).format("DDMMY");
+        let date = moment(input.selectedDate)
+          .startOf("week")
+          .format("DDMMY");
         db.collection(date)
           .deleteOne({ index: input.id })
           .then(data => io.sockets.emit("refresh", date));
+      });
+
+      socket.on("fetchWeek", input => {
+        let firstDate = moment(input, "week").startOf("week");
+        for (i = 1; i < 6; i++) {
+          let date = moment(firstDate)
+            .add(i, "d")
+            .format("DDMMY");
+          db.collection(date).find({}, (err, cursor) => {
+            cursor.toArray((err, result) => {
+              io.sockets.emit("weekData", result);
+            });
+          });
+        }
       });
     });
 

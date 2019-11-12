@@ -106,7 +106,9 @@ export function addHoursArray(payload) {
 export function fetchProgramari(payload) {
   return dispatch => {
     dispatch({ type: FETCH_PROGRAMARI_STARTED });
-    const collection = moment(payload).format("DDMMY");
+    const collection = moment(payload)
+      .startOf("week")
+      .format("DDMMY");
     socket.emit("fetchItems", collection);
   };
 }
@@ -114,7 +116,9 @@ export function fetchProgramari(payload) {
 export function fetchEditProgramari(payload) {
   return dispatch => {
     dispatch({ type: FETCH_EDIT_PROGRAMARI_STARTED });
-    const collection = moment(payload).format("DDMMY");
+    const collection = moment(payload)
+      .startOf("week")
+      .format("DDMMY");
     socket.emit("fetchEditItems", collection);
   };
 }

@@ -1,27 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MainPage.css";
 import "tachyons";
-import AppointmentCards from "../../Components/AppointmentCards/AppointmentCards";
 import { CssBaseline } from "@material-ui/core";
 import { connect } from "react-redux";
 import LoadingOverlay from "react-loading-overlay";
 import LeftPanel from "../LeftPanel/LeftPanel";
 import AddAppointment from "../../Components/AddAppointment/AddAppointment";
-import TableBackground from "../../Components/TableBackground/TableBackground";
-import HourRows from "../../Components/HourRows/HourRows";
 import "shards-ui/dist/css/shards.min.css";
-import RefreshIcon from "@material-ui/icons/Refresh";
-import { Fab } from "@material-ui/core";
+import WeekPanel from "../WeekPanel/WeekPanel";
+import DayPanel from "../DayPanel/DayPanel";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import io from "socket.io-client";
+import moment from "moment";
+import {
+  deleteProgramare,
+  toggleAddModal,
+  setProgramari,
+  setProgramariEdit,
+  fetchProgramari,
+  selectDate
+} from "../../actions/index";
 
 const mapStateToProps = state => {
   return {
     loading: state.loading,
     error: state.error,
-    errorContent: state.errorContent
+    errorContent: state.errorContent,
+    selectedDate: state.selectedDate
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteProgramare: programare => dispatch(deleteProgramare(programare)),
+    toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal)),
+    setProgramari: programari => dispatch(setProgramari(programari)),
+    setProgramariEdit: programari => dispatch(setProgramariEdit(programari)),
+    fetchProgramari: programari => dispatch(fetchProgramari(programari)),
+    selectDate: date => dispatch(selectDate(date))
   };
 };
 
 const MainPage = props => {
+  useEffect(() => {
+    const firstDay = moment(props.selectedDate).startOf("week");
+    props.fetchProgramari(firstDay);
+    const socket = io.connect("/");
+    socket.on("dataFetch", input => {
+      props.setProgramari(input);
+    });
+    socket.on("refresh", input => {
+      const data = moment(input, "DDMMY").format();
+      props.fetchProgramari(data);
+    });
+    socket.on("dataFetchEdit", input => {
+      props.setProgramariEdit(input);
+    });
+    socket.on("error", error => {
+      document.write(`Error: ${error} <br />`);
+    });
+    socket.on("connect_error", error => {
+      document.write(`Eroare la conexiune. Reincercati. <br />`);
+    });
+    socket.on("connect_timeout", error => {
+      document.write(`Conexiunea a expirat. <br />`);
+    });
+    socket.on("reconnect", () => {
+      window.location.reload(true);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (props.error) {
     const errorArray = props.errorContent.map(eroare => {
       return <p>{eroare.toString()}</p>;
@@ -30,66 +78,32 @@ const MainPage = props => {
     return <div>{errorArray}</div>;
   } else {
     return (
-      <React.Fragment>
+      <BrowserRouter>
         <CssBaseline />
         <LoadingOverlay active={props.loading} spinner>
           <div className="appWrapper flex flex-wrap">
-            <LeftPanel />
-            <div
-              className="panelFiller"
-              style={{ height: "100%", width: "23rem" }}
-            ></div>
-            <div className="tableWrapper">
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  zIndex: "1",
-                  marginTop: "1.95rem"
-                }}
-              >
-                <TableBackground />
-              </div>
-              <HourRows />
-              <div
-                className="f4 tc"
-                style={{
-                  padding: "1.1rem",
-                  gridColumnStart: "2",
-                  gridRowStart: "1"
-                }}
-              >
-                Cab. 1
-              </div>
-              <div
-                className="f4 tc"
-                style={{
-                  padding: "1.1rem",
-                  gridColumnStart: "3",
-                  gridRowStart: "1"
-                }}
-              >
-                Cab. 2
-              </div>
-              <div
-                className="f4 tc"
-                style={{
-                  padding: "1.1rem",
-                  gridColumnStart: "4",
-                  gridRowStart: "1"
-                }}
-              >
-                Cab. 3
-              </div>
-              <AppointmentCards />
-            </div>
+            <Switch>
+              <Route exact path="/">
+                <LeftPanel />
+                <div
+                  className="panelFiller"
+                  style={{ height: "100%", width: "23rem" }}
+                ></div>
+                <DayPanel />
+              </Route>
+              <Route path="/week">
+                <WeekPanel />
+              </Route>
+            </Switch>
             <AddAppointment />
           </div>
         </LoadingOverlay>
-      </React.Fragment>
+      </BrowserRouter>
     );
   }
 };
 
-export default connect(mapStateToProps)(MainPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainPage);

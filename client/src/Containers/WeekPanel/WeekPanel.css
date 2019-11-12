@@ -1,0 +1,9 @@
+.modal-title {
+  display: flex;
+  align-items: center;
+}
+
+.weekTableWrapper {
+  max-width: 90%;
+  flex: 1;
+}

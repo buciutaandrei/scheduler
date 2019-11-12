@@ -23,7 +23,8 @@ const hourRows = () => {
               padding: "0px",
               margin: "0px",
               display: "table-cell",
-              verticalAlign: "middle"
+              verticalAlign: "middle",
+              textAlign: "center"
             }}
           >
             {hourText}

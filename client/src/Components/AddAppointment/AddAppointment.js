@@ -69,10 +69,12 @@ const AddAppointment = props => {
     ora,
     durata,
     medic,
-    cabinet
+    cabinet,
+    edit
   } = props.selectedProgramare;
 
-  const disabled =
+  const deleteDisabled = !edit;
+  const saveDisabled =
     nume === undefined ||
     nume === "" ||
     prenume === undefined ||
@@ -296,10 +298,21 @@ const AddAppointment = props => {
           </div>
           <Button
             style={{ position: "absolute", right: "20px", bottom: "20px" }}
-            disabled={disabled}
+            disabled={saveDisabled}
             onClick={submitClick}
           >
             Save
+          </Button>
+          <Button
+            style={{ position: "absolute", left: "20px", bottom: "20px" }}
+            onClick={() => {
+              programareDelete();
+              toggleAddModal();
+            }}
+            theme="danger"
+            disabled={deleteDisabled}
+          >
+            Delete
           </Button>
         </ModalBody>
       </Modal>
