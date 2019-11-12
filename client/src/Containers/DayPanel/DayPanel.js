@@ -22,6 +22,7 @@ const DayPanel = props => {
     <React.Fragment>
       <Link to="/week">
         <Fab
+          className="switchView"
           style={{
             position: "absolute",
             bottom: "1rem",

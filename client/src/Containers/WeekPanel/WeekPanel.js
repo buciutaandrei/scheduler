@@ -100,6 +100,12 @@ const WeekPanel = props => {
       moment(programare.selectedDate).weekday();
     let durata = programare.durata;
     let bgColor = `bg-${programare.medic}`;
+    let pacientName = "";
+    if (programare.durata === 1) {
+      pacientName = `${programare.nume}`;
+    } else {
+      pacientName = `${programare.nume} ${programare.prenume}`;
+    }
     return (
       <div
         id={`${programare.index}`}
@@ -108,13 +114,12 @@ const WeekPanel = props => {
         style={{
           gridColumn: cabinetIndex,
           gridRow: `${hourIndex} / span ${durata}`,
-          zIndex: "9"
+          zIndex: "9",
+          overflow: "hidden"
         }}
         onClick={() => handleEdit(programare)}
       >
-        {programare.nume}
-        <br />
-        {programare.prenume}
+        {pacientName}
       </div>
     );
   });
@@ -124,9 +129,20 @@ const WeekPanel = props => {
       <div
         style={{
           position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: "#357edd",
+          zIndex: "-1"
+        }}
+        className="shadow-3 topBar"
+      ></div>
+      <div
+        style={{
+          position: "absolute",
           width: "90%",
           zIndex: "1",
-          marginTop: "5.8rem",
+          marginTop: "5rem",
           alignSelf: "center"
         }}
       >
@@ -154,7 +170,7 @@ const WeekPanel = props => {
           aria-label="add"
           style={{
             position: "absolute",
-            top: "1rem",
+            top: "3.5rem",
             right: "1rem",
             backgroundColor: "#74adff",
             color: "white",
@@ -175,8 +191,8 @@ const WeekPanel = props => {
         >
           <button
             style={{
-              backgroundColor: "#fafafa",
-              color: "black",
+              backgroundColor: "transparent",
+              color: "#fafafa",
               border: "none",
               fontSize: "1.5rem"
             }}
@@ -186,7 +202,10 @@ const WeekPanel = props => {
           >
             &#8592;
           </button>
-          <div className="f4 pa2">
+          <div
+            style={{ color: "#fafafa", cursor: "default" }}
+            className="f3 pa2"
+          >
             {moment(weekNumber)
               .startOf("week")
               .format("DD.MM.Y")}{" "}
@@ -198,8 +217,8 @@ const WeekPanel = props => {
           </div>
           <button
             style={{
-              backgroundColor: "#fafafa",
-              color: "black",
+              backgroundColor: "transparent",
+              color: "#fafafa",
               border: "none",
               fontSize: "1.5rem"
             }}

@@ -6,4 +6,9 @@
 .weekTableWrapper {
   max-width: 90%;
   flex: 1;
+  align-self: flex-start;
+}
+
+.topBar {
+  height: 2.7rem;
 }
