@@ -9,7 +9,7 @@ dayjs.locale(ro);
 
 const mapStateToProps = state => {
   return {
-    programari: state.programari,
+    appointments: state.appointments,
     selectedDate: state.selectedDate
   };
 };
@@ -21,17 +21,18 @@ const mapDispatchToProps = dispatch => {
 };
 
 const AppointmentCards = props => {
-  const { programari, selectedDate } = props;
+  const { appointments, selectedDate } = props;
 
   const handleEdit = event => {
     props.toggleAddModal(
       Object.assign({}, event, {
         edit: true,
         editDate: event.selectedDate,
-        editCabinet: event.cabinet,
-        cabinet: ""
+        editRoom: event.room,
+        room: ""
       })
     );
+    console.log(event);
   };
 
   const doctorName = data => {
@@ -50,19 +51,19 @@ const AppointmentCards = props => {
     }
   };
 
-  const array = programari.map(programare => {
+  const array = appointments.map(appointment => {
     if (
-      dayjs(programare.selectedDate).format("DDMM") ===
+      dayjs(appointment.selectedDate).format("DDMM") ===
       dayjs(selectedDate).format("DDMM")
     ) {
-      let hourIndex = hoursArray.indexOf(programare.ora) + 1;
-      let cabinetIndex = Number(programare.cabinet) + 1;
-      let durata = programare.durata;
-      let bgColor = `bg-${programare.medic}`;
-      const medic = doctorName(programare.medic);
+      let hourIndex = hoursArray.indexOf(appointment.ora) + 1;
+      let roomIndex = Number(appointment.room) + 1;
+      let timespan = appointment.timespan;
+      let bgColor = `bg-${appointment.medic}`;
+      const medic = doctorName(appointment.medic);
       let style = {};
       let cellStyle = {};
-      if (durata === "1") {
+      if (timespan === "1") {
         style = {
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
@@ -71,7 +72,7 @@ const AppointmentCards = props => {
           alignContent: "center",
           height: "100%"
         };
-      } else if (durata === "2") {
+      } else if (timespan === "2") {
         style = {
           alignContent: "center",
           marginTop: "-3px",
@@ -92,15 +93,15 @@ const AppointmentCards = props => {
 
       return (
         <div
-          id={`${programare.index}`}
-          key={`${programare.index}`}
-          className={`programare pt1 tc dib black-90 shadow-4 ${bgColor}`}
+          id={`${appointment.index}`}
+          key={`${appointment.index}`}
+          className={`appointment pt1 tc dib black-90 shadow-4 ${bgColor}`}
           style={{
-            gridColumn: cabinetIndex,
-            gridRow: `${hourIndex} / span ${durata}`,
+            gridColumn: roomIndex,
+            gridRow: `${hourIndex} / span ${timespan}`,
             zIndex: "9"
           }}
-          onClick={handleEdit}
+          onClick={() => handleEdit(appointment)}
         >
           <div style={style}>
             <span
@@ -110,9 +111,9 @@ const AppointmentCards = props => {
                 overflow: "hidden"
               }}
             >
-              {programare.nume} {programare.prenume}
+              {appointment.name} {appointment.firstName}
             </span>
-            <span>{programare.telefon}</span>
+            <span>{appointment.telefon}</span>
             <span style={cellStyle}>{medic}</span>
           </div>
         </div>

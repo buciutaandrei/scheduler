@@ -7,7 +7,7 @@ import { hoursArray } from "../../Components/DataTables/hoursArray";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Loop from "@material-ui/icons/Loop";
-import { toggleAddModal, fetchProgramari } from "../../actions/index";
+import { toggleAddModal, fetchAppointments } from "../../actions/index";
 import TableBackground from "../../Components/TableBackground/TableBackground";
 import dayjs from "dayjs";
 import ro from "dayjs/locale/ro";
@@ -17,7 +17,7 @@ dayjs.extend(weekday);
 
 const mapStateToProps = state => {
   return {
-    programari: state.programari,
+    appointments: state.appointments,
     selectedDate: state.selectedDate
   };
 };
@@ -25,7 +25,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal)),
-    fetchProgramari: programari => dispatch(fetchProgramari(programari))
+    fetchAppointments: appointments => dispatch(fetchAppointments(appointments))
   };
 };
 
@@ -33,7 +33,7 @@ const WeekPanel = props => {
   const [weekNumber, setWeekNumber] = useState(dayjs());
 
   useEffect(() => {
-    props.fetchProgramari(weekNumber);
+    props.fetchAppointments(weekNumber);
   }, [weekNumber]);
 
   const handleEdit = event => {
@@ -41,16 +41,16 @@ const WeekPanel = props => {
       Object.assign({}, event, {
         edit: true,
         editDate: event.selectedDate,
-        editCabinet: event.cabinet,
-        cabinet: ""
+        editRoom: event.room,
+        room: ""
       })
     );
   };
 
-  const emptyState = { nume: "", prenume: "", telefon: "" };
+  const emptyState = { name: "", firstName: "", telefon: "" };
 
   const days = [];
-  const cabinete = ["1", "2", "3"];
+  const rooms = ["1", "2", "3"];
   for (let i = 0; i < 5; ++i) {
     days.push(
       dayjs(weekNumber, "week")
@@ -74,11 +74,11 @@ const WeekPanel = props => {
       </div>
     );
   });
-  const cabineteHeader = days.map((days, i) => {
-    const cabineteList = cabinete.map((cabinet, j) => {
+  const roomsHeader = days.map((days, i) => {
+    const roomsList = rooms.map((room, j) => {
       return (
         <div
-          key={`${cabinet}${days}`}
+          key={`${room}${days}`}
           className="tc f5 pa2"
           style={{
             zIndex: 10,
@@ -86,39 +86,39 @@ const WeekPanel = props => {
             gridRowStart: "2"
           }}
         >
-          {cabinet}
+          {room}
         </div>
       );
     });
-    return cabineteList;
+    return roomsList;
   });
 
-  const arrayProgramari = props.programari.map(programare => {
-    let hourIndex = hoursArray.indexOf(programare.ora) + 2;
-    let cabinetIndex =
-      Number(programare.cabinet) +
-      3 * dayjs(programare.selectedDate).weekday() +
+  const arrayAppointments = props.appointments.map(appointment => {
+    let hourIndex = hoursArray.indexOf(appointment.ora) + 2;
+    let roomIndex =
+      Number(appointment.room) +
+      3 * dayjs(appointment.selectedDate).weekday() +
       1;
-    let durata = programare.durata;
-    let bgColor = `bg-${programare.medic}`;
+    let timespan = appointment.timespan;
+    let bgColor = `bg-${appointment.medic}`;
     let pacientName = "";
-    if (programare.durata === 1) {
-      pacientName = `${programare.nume}`;
+    if (appointment.timespan === 1) {
+      pacientName = `${appointment.name}`;
     } else {
-      pacientName = `${programare.nume} ${programare.prenume}`;
+      pacientName = `${appointment.name} ${appointment.firstName}`;
     }
     return (
       <div
-        id={`${programare.index}`}
-        key={`${programare.index}`}
-        className={`programare pt1 tc dib black-90 shadow-4 ${bgColor}`}
+        id={`${appointment.index}`}
+        key={`${appointment.index}`}
+        className={`appointment pt1 tc dib black-90 shadow-4 ${bgColor}`}
         style={{
-          gridColumn: cabinetIndex,
-          gridRow: `${hourIndex} / span ${durata}`,
+          gridColumn: roomIndex,
+          gridRow: `${hourIndex} / span ${timespan}`,
           zIndex: "9",
           overflow: "hidden"
         }}
-        onClick={() => handleEdit(programare)}
+        onClick={() => handleEdit(appointment)}
       >
         {pacientName}
       </div>
@@ -238,8 +238,8 @@ const WeekPanel = props => {
           }}
         >
           {daysHeader}
-          {cabineteHeader}
-          {arrayProgramari}
+          {roomsHeader}
+          {arrayAppointments}
           <div
             style={{ display: "table-cell", gridRow: "2", gridColumn: "1" }}
           ></div>

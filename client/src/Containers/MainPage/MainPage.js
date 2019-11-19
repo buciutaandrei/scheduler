@@ -12,11 +12,11 @@ import DayPanel from "../DayPanel/DayPanel";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
 import {
-  deleteProgramare,
+  deleteAppointment,
   toggleAddModal,
-  setProgramari,
-  setProgramariEdit,
-  fetchProgramari,
+  setAppointments,
+  setAppointmentsEdit,
+  fetchAppointments,
   selectDate
 } from "../../actions/index";
 import dayjs from "dayjs";
@@ -33,11 +33,13 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    deleteProgramare: programare => dispatch(deleteProgramare(programare)),
+    deleteAppointment: appointment => dispatch(deleteAppointment(appointment)),
     toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal)),
-    setProgramari: programari => dispatch(setProgramari(programari)),
-    setProgramariEdit: programari => dispatch(setProgramariEdit(programari)),
-    fetchProgramari: programari => dispatch(fetchProgramari(programari)),
+    setAppointments: appointments => dispatch(setAppointments(appointments)),
+    setAppointmentsEdit: appointments =>
+      dispatch(setAppointmentsEdit(appointments)),
+    fetchAppointments: appointments =>
+      dispatch(fetchAppointments(appointments)),
     selectDate: date => dispatch(selectDate(date))
   };
 };
@@ -45,17 +47,17 @@ const mapDispatchToProps = dispatch => {
 const MainPage = props => {
   useEffect(() => {
     const firstDay = dayjs(props.selectedDate).startOf("week");
-    props.fetchProgramari(firstDay);
+    props.fetchAppointments(firstDay);
     const socket = io.connect("/");
     socket.on("dataFetch", input => {
-      props.setProgramari(input);
+      props.setAppointments(input);
     });
     socket.on("refresh", input => {
       const data = dayjs(input, "DDMMYYYY").format();
-      props.fetchProgramari(data);
+      props.fetchAppointments(data);
     });
     socket.on("dataFetchEdit", input => {
-      props.setProgramariEdit(input);
+      props.setAppointmentsEdit(input);
     });
     socket.on("error", error => {
       document.write(`Error: ${error} <br />`);

@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const programareSchema = new mongoose.Schema({
+const appointmentSchema = new mongoose.Schema({
   pacient: {
     type: String,
     unique: true
   }
 });
 
-const Programare = mongoose.model("Programare", programareSchema);
-module.exports = Programare;
+const Appointment = mongoose.model("Appointment", appointmentSchema);
+module.exports = Appointment;

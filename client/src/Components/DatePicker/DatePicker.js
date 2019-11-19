@@ -4,13 +4,13 @@ import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import { connect } from "react-redux";
 import { selectDate } from "../../actions/index";
-import { fetchProgramari } from "../../actions/index";
+import { fetchAppointments } from "../../actions/index";
 import localeUtils from "../../ro.js";
 
 const mapDispatchToProps = dispatch => {
   return {
     selectDate: selectedDate => dispatch(selectDate(selectedDate)),
-    fetchProgramari: programare => dispatch(fetchProgramari(programare))
+    fetchAppointments: appointment => dispatch(fetchAppointments(appointment))
   };
 };
 
@@ -23,7 +23,7 @@ const mapStateToProps = state => {
 const DatePicker = props => {
   const handleDateSelect = event => {
     props.selectDate(event);
-    props.fetchProgramari(event);
+    props.fetchAppointments(event);
   };
 
   return (

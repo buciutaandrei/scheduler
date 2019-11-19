@@ -1,20 +1,20 @@
 import {
-  SELECT_PROGRAMARE,
+  SELECT_APPOINTMENT,
   HANDLE_FORM_CHANGE,
   SELECT_DATE,
   SELECT_EDIT_DATE,
-  FETCH_PROGRAMARI_STARTED,
-  FETCH_EDIT_PROGRAMARI_STARTED,
-  ADD_PROGRAMARE_STARTED,
-  DELETE_PROGRAMARE_STARTED,
+  FETCH_APPOINTMENTS_STARTED,
+  FETCH_EDIT_APPOINTMENTS_STARTED,
+  ADD_APPOINTMENT_STARTED,
+  DELETE_APPOINTMENT_STARTED,
   TOGGLE_ADD_MODAL,
   ADD_HOURS_ARRAY,
   USER_LOGGING_STARTED,
   USER_LOGGING_SUCCESS,
   USER_LOGGING_ERROR,
   LOGGING_OUT,
-  SET_PROGRAMARI,
-  SET_PROGRAMARI_EDIT,
+  SET_APPOINTMENTS,
+  SET_APPOINTMENTS_EDIT,
   SET_ERROR
 } from "../constants/action-types";
 
@@ -25,11 +25,11 @@ const initialState = {
   loading: false,
   selectedDate: new Date(),
   formChange: {},
-  selectedProgramare: { nume: "", prenume: "", telefon: "" },
-  programari: [],
+  selectedAppointment: { name: "", firstName: "", telefon: "" },
+  appointments: [],
   loggedIn: false,
   loginErrors: {},
-  programariEdit: [],
+  appointmentsEdit: [],
   error: false
 };
 
@@ -52,7 +52,7 @@ function rootReducer(state = initialState, action) {
         return Object.assign(
           {},
           state,
-          { selectedProgramare: action.payload },
+          { selectedAppointment: action.payload },
           { modalState: !state.modalState }
         );
       } else {
@@ -69,34 +69,34 @@ function rootReducer(state = initialState, action) {
     case USER_LOGGING_ERROR: {
       return Object.assign({}, state, { loginErrors: action.payload });
     }
-    case DELETE_PROGRAMARE_STARTED: {
+    case DELETE_APPOINTMENT_STARTED: {
       return Object.assign({}, state, { deleting: true });
     }
 
-    case ADD_PROGRAMARE_STARTED: {
+    case ADD_APPOINTMENT_STARTED: {
       return Object.assign({}, state, { adding: true });
     }
-    case SELECT_PROGRAMARE: {
+    case SELECT_APPOINTMENT: {
       return Object.assign({}, state, {
-        selectedProgramare: action.payload
+        selectedAppointment: action.payload
       });
     }
     case HANDLE_FORM_CHANGE: {
-      const oldState = state.selectedProgramare;
+      const oldState = state.selectedAppointment;
       const newState = Object.assign({}, oldState, action.payload);
 
-      return Object.assign({}, state, { selectedProgramare: newState });
+      return Object.assign({}, state, { selectedAppointment: newState });
     }
 
     case SELECT_DATE: {
       return Object.assign({}, state, { selectedDate: action.payload });
     }
 
-    case FETCH_PROGRAMARI_STARTED: {
+    case FETCH_APPOINTMENTS_STARTED: {
       return Object.assign({}, state, { loading: true });
     }
 
-    case FETCH_EDIT_PROGRAMARI_STARTED: {
+    case FETCH_EDIT_APPOINTMENTS_STARTED: {
       return Object.assign({}, state);
     }
 
@@ -112,17 +112,17 @@ function rootReducer(state = initialState, action) {
       });
     }
 
-    case SET_PROGRAMARI: {
+    case SET_APPOINTMENTS: {
       return Object.assign(
         {},
         state,
-        { programari: action.payload },
+        { appointments: action.payload },
         { loading: false }
       );
     }
 
-    case SET_PROGRAMARI_EDIT: {
-      return Object.assign({}, state, { programariEdit: action.payload });
+    case SET_APPOINTMENTS_EDIT: {
+      return Object.assign({}, state, { appointmentsEdit: action.payload });
     }
 
     default:

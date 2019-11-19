@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const DayPanel = props => {
-  const emptyState = { nume: "", prenume: "", telefon: "" };
+  const emptyState = { name: "", firstName: "", telefon: "" };
 
   return (
     <React.Fragment>

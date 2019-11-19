@@ -21,19 +21,19 @@
   transform: scale(0.9);
 }
 
-.programare {
+.appointment {
   transition: all 0.3s ease-in-out;
   color: #fafafa;
 }
 
-.programare:hover {
+.appointment:hover {
   transform: scale(1.1);
 }
 
-.programare:hover .deleteIcon {
+.appointment:hover .deleteIcon {
   display: block;
 }
 
-.programare:hover .editIcon {
+.appointment:hover .editIcon {
   display: block;
 }

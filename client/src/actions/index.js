@@ -1,21 +1,21 @@
 import axios from "axios";
 import {
-  SELECT_PROGRAMARE,
+  SELECT_APPOINTMENT,
   HANDLE_FORM_CHANGE,
   SELECT_DATE,
   SELECT_EDIT_DATE,
-  FETCH_PROGRAMARI_STARTED,
-  FETCH_EDIT_PROGRAMARI_STARTED,
-  ADD_PROGRAMARE_STARTED,
-  DELETE_PROGRAMARE_STARTED,
+  FETCH_APPOINTMENTS_STARTED,
+  FETCH_EDIT_APPOINTMENTS_STARTED,
+  ADD_APPOINTMENT_STARTED,
+  DELETE_APPOINTMENT_STARTED,
   TOGGLE_ADD_MODAL,
   ADD_HOURS_ARRAY,
   USER_LOGGING_STARTED,
   USER_LOGGING_SUCCESS,
   USER_LOGGING_ERROR,
   LOGGING_OUT,
-  SET_PROGRAMARI,
-  SET_PROGRAMARI_EDIT,
+  SET_APPOINTMENTS,
+  SET_APPOINTMENTS_EDIT,
   SET_ERROR
 } from "../constants/action-types";
 import setAuthToken from "../Containers/LoginPage/setAuthToken";
@@ -49,12 +49,12 @@ export function setError(payload) {
   return { type: SET_ERROR, payload };
 }
 
-export function setProgramari(payload) {
-  return { type: SET_PROGRAMARI, payload };
+export function setAppointments(payload) {
+  return { type: SET_APPOINTMENTS, payload };
 }
 
-export function setProgramariEdit(payload) {
-  return { type: SET_PROGRAMARI_EDIT, payload };
+export function setAppointmentsEdit(payload) {
+  return { type: SET_APPOINTMENTS_EDIT, payload };
 }
 
 export function setUser(payload) {
@@ -75,22 +75,22 @@ export function selectEditDate(payload) {
   return { type: SELECT_EDIT_DATE, payload };
 }
 
-export function deleteProgramare(payload) {
+export function deleteAppointment(payload) {
   return dispatch => {
-    dispatch({ type: DELETE_PROGRAMARE_STARTED });
+    dispatch({ type: DELETE_APPOINTMENT_STARTED });
     socket.emit("deleteItems", payload);
   };
 }
 
-export function addProgramare(payload) {
+export function addAppointment(payload) {
   return dispatch => {
-    dispatch({ type: ADD_PROGRAMARE_STARTED });
+    dispatch({ type: ADD_APPOINTMENT_STARTED });
     socket.emit("addItems", payload);
   };
 }
 
-export function selectProgramare(payload) {
-  return { type: SELECT_PROGRAMARE, payload };
+export function selectAppointment(payload) {
+  return { type: SELECT_APPOINTMENT, payload };
 }
 
 export function handleFormChange(payload) {
@@ -105,9 +105,9 @@ export function addHoursArray(payload) {
   return { type: ADD_HOURS_ARRAY, payload };
 }
 
-export function fetchProgramari(payload) {
+export function fetchAppointments(payload) {
   return dispatch => {
-    dispatch({ type: FETCH_PROGRAMARI_STARTED });
+    dispatch({ type: FETCH_APPOINTMENTS_STARTED });
     const collection = dayjs(payload)
       .startOf("week")
       .format("DDMMYYYY");
@@ -115,9 +115,9 @@ export function fetchProgramari(payload) {
   };
 }
 
-export function fetchEditProgramari(payload) {
+export function fetchEditAppointments(payload) {
   return dispatch => {
-    dispatch({ type: FETCH_EDIT_PROGRAMARI_STARTED });
+    dispatch({ type: FETCH_EDIT_APPOINTMENTS_STARTED });
     const collection = dayjs(payload)
       .startOf("week")
       .format("DDMMYYYY");
