@@ -89,10 +89,6 @@ const MainPage = props => {
             <Switch>
               <Route exact path="/">
                 <LeftPanel />
-                <div
-                  className="panelFiller"
-                  style={{ height: "100%", width: "23rem" }}
-                ></div>
                 <DayPanel />
               </Route>
               <Route path="/week">

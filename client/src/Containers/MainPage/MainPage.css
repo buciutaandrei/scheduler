@@ -49,17 +49,11 @@
   z-index: 30 !important;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 600px) {
   .tableWrapper {
     max-width: 100%;
   }
   .switchView {
     display: none !important;
-  }
-}
-
-@media (max-width: 700px) {
-  .panelFiller {
-    display: none;
   }
 }

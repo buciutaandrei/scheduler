@@ -5,8 +5,26 @@ import Button from "@material-ui/core/Button";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { connect } from "react-redux";
 import { toggleAddModal, loggingOut } from "../../actions/index";
-
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import {
+  makeStyles,
+  useTheme,
+  Theme,
+  createStyles
+} from "@material-ui/core/styles";
 import "./LeftPanel.css";
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    drawer: {
+      [theme.breakpoints.up("sm")]: {
+        width: 240,
+        flexShrink: 0
+      }
+    }
+  })
+);
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -17,35 +35,51 @@ const mapDispatchToProps = dispatch => {
 
 const LeftPanel = props => {
   const [drawer, toggleDrawer] = useState(true);
+  const classes = useStyles();
+
+  const drawerContent = (
+    <div className="shadow-5 leftPanelSwipe">
+      <div className="datePickerWrapper ma4 pa3 shadow-3">
+        <DatePicker />
+      </div>
+      <Button
+        style={{
+          position: "absolute",
+          padding: "1.5rem",
+          bottom: "0",
+          left: "0",
+          width: "23rem",
+          height: "2rem",
+          color: "#fafafa",
+          letterSpacing: "2px",
+          zIndex: "20"
+        }}
+        onClick={props.loggingOut}
+      >
+        Log out
+      </Button>
+    </div>
+  );
+  console.log(classes.drawer);
 
   return (
-    <SwipeableDrawer
-      open={drawer}
-      onOpen={() => toggleDrawer(true)}
-      onClose={() => toggleDrawer(false)}
-    >
-      <div className="shadow-5 leftPanelSwipe">
-        <div className="datePickerWrapper ma4 pa3 shadow-3">
-          <DatePicker />
-        </div>
-        <Button
-          style={{
-            position: "absolute",
-            padding: "1.5rem",
-            bottom: "0",
-            left: "0",
-            width: "23rem",
-            height: "2rem",
-            color: "#fafafa",
-            letterSpacing: "2px",
-            zIndex: "20"
-          }}
-          onClick={props.loggingOut}
+    <div id="drawerId" className={classes.drawer}>
+      <Hidden smUp implementation="js">
+        <Drawer
+          variant="temporary"
+          open={drawer}
+          onClose={() => toggleDrawer(false)}
+          ModalProps={{ keepMounted: true }}
         >
-          Log out
-        </Button>
-      </div>
-    </SwipeableDrawer>
+          {drawerContent}
+        </Drawer>
+      </Hidden>
+      <Hidden xsDown implementation="js">
+        <Drawer variant="permanent" open>
+          {drawerContent}
+        </Drawer>
+      </Hidden>
+    </div>
   );
 };
 

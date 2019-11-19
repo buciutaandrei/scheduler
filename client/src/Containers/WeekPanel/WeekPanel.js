@@ -7,7 +7,11 @@ import { hoursArray } from "../../Components/DataTables/hoursArray";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Loop from "@material-ui/icons/Loop";
-import { toggleAddModal, fetchAppointments } from "../../actions/index";
+import {
+  toggleAddModal,
+  fetchAppointments,
+  selectDate
+} from "../../actions/index";
 import TableBackground from "../../Components/TableBackground/TableBackground";
 import dayjs from "dayjs";
 import ro from "dayjs/locale/ro";
@@ -25,7 +29,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal)),
-    fetchAppointments: appointments => dispatch(fetchAppointments(appointments))
+    fetchAppointments: appointments =>
+      dispatch(fetchAppointments(appointments)),
+    selectDate: date => dispatch(selectDate(date))
   };
 };
 
@@ -69,8 +75,9 @@ const WeekPanel = props => {
           gridColumn: `${i * 3 + 2} / span 3`,
           gridRowStart: "1"
         }}
+        onClick={() => props.selectDate(dayjs(days, "dddd DD.MM").format())}
       >
-        {days}
+        <Link to="/">{days}</Link>
       </div>
     );
   });

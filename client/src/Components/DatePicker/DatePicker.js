@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 import { selectDate } from "../../actions/index";
 import { fetchAppointments } from "../../actions/index";
 import localeUtils from "../../ro.js";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+dayjs.locale(ro);
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -31,7 +34,7 @@ const DatePicker = props => {
       <DayPicker
         localeUtils={localeUtils}
         locale="ro"
-        selectedDays={props.selectedDate}
+        selectedDays={new Date(props.selectedDate)}
         onDayClick={event => handleDateSelect(event)}
         disabledDays={{ daysOfWeek: [0, 6] }}
       />
