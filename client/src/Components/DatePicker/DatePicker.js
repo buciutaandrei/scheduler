@@ -2,10 +2,10 @@ import React from "react";
 import "./DatePicker.css";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import MomentLocaleUtils from "react-day-picker/moment";
 import { connect } from "react-redux";
 import { selectDate } from "../../actions/index";
 import { fetchProgramari } from "../../actions/index";
+import localeUtils from "../../ro.js";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -29,7 +29,7 @@ const DatePicker = props => {
   return (
     <div className="datePickerWrapper">
       <DayPicker
-        localeUtils={MomentLocaleUtils}
+        localeUtils={localeUtils}
         locale="ro"
         selectedDays={props.selectedDate}
         onDayClick={event => handleDateSelect(event)}

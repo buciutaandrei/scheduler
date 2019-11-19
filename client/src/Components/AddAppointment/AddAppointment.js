@@ -24,7 +24,7 @@ import "./AddAppointment.css";
 //importing  DayPicker and Moment
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import MomentLocaleUtils from "react-day-picker/moment";
+import localeUtils from "../../ro.js";
 import dayjs from "dayjs";
 import ro from "dayjs/locale/ro";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -223,7 +223,7 @@ const AddAppointment = props => {
           <div className="addAppointmentForm pv5">
             <div>
               <DayPicker
-                localeUtils={MomentLocaleUtils}
+                localeUtils={localeUtils}
                 locale="ro"
                 selectedDays={selectedDate}
                 onDayClick={event => handleDateSelect(event)}
