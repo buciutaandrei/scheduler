@@ -4,11 +4,10 @@ import HourRows from "../../Components/HourRows/HourRows";
 import "./WeekPanel.css";
 import { connect } from "react-redux";
 import { hoursArray } from "../../Components/DataTables/hoursArray";
-import io from "socket.io-client";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Loop from "@material-ui/icons/Loop";
-import { toggleAddModal } from "../../actions/index";
+import { toggleAddModal, fetchProgramari } from "../../actions/index";
 import TableBackground from "../../Components/TableBackground/TableBackground";
 import dayjs from "dayjs";
 import ro from "dayjs/locale/ro";
@@ -25,7 +24,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal))
+    toggleAddModal: toggleModal => dispatch(toggleAddModal(toggleModal)),
+    fetchProgramari: programari => dispatch(fetchProgramari(programari))
   };
 };
 
@@ -33,11 +33,7 @@ const WeekPanel = props => {
   const [weekNumber, setWeekNumber] = useState(dayjs());
 
   useEffect(() => {
-    const weekStart = dayjs(weekNumber)
-      .startOf("week")
-      .format("DDMMYYYY");
-    const socket = io.connect("/");
-    socket.emit("fetchItems", weekStart);
+    props.fetchProgramari(weekNumber);
   }, [weekNumber]);
 
   const handleEdit = event => {

@@ -111,6 +111,7 @@ export function fetchProgramari(payload) {
     const collection = dayjs(payload)
       .startOf("week")
       .format("DDMMYYYY");
+    console.log("collection", collection);
     socket.emit("fetchItems", collection);
   };
 }
