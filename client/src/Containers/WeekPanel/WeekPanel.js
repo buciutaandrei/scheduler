@@ -40,6 +40,7 @@ const WeekPanel = props => {
 
   useEffect(() => {
     props.fetchAppointments(weekNumber);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weekNumber]);
 
   const handleEdit = event => {

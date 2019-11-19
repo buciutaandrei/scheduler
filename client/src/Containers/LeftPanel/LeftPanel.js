@@ -2,17 +2,11 @@ import React, { useState } from "react";
 import DatePicker from "../../Components/DatePicker/DatePicker.js";
 import "tachyons";
 import Button from "@material-ui/core/Button";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { connect } from "react-redux";
 import { toggleAddModal, loggingOut } from "../../actions/index";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import {
-  makeStyles,
-  useTheme,
-  Theme,
-  createStyles
-} from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import "./LeftPanel.css";
 
 const useStyles = makeStyles(theme =>
