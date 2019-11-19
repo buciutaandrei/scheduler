@@ -18,10 +18,12 @@ import {
   SET_PROGRAMARI_EDIT,
   SET_ERROR
 } from "../constants/action-types";
-import moment from "moment";
 import setAuthToken from "../Containers/LoginPage/setAuthToken";
 import jwt_decode from "jwt-decode";
 import io from "socket.io-client";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+dayjs.locale(ro);
 
 let socket = io.connect("/");
 
@@ -106,9 +108,9 @@ export function addHoursArray(payload) {
 export function fetchProgramari(payload) {
   return dispatch => {
     dispatch({ type: FETCH_PROGRAMARI_STARTED });
-    const collection = moment(payload)
+    const collection = dayjs(payload)
       .startOf("week")
-      .format("DDMMY");
+      .format("DDMMYYYY");
     socket.emit("fetchItems", collection);
   };
 }
@@ -116,9 +118,9 @@ export function fetchProgramari(payload) {
 export function fetchEditProgramari(payload) {
   return dispatch => {
     dispatch({ type: FETCH_EDIT_PROGRAMARI_STARTED });
-    const collection = moment(payload)
+    const collection = dayjs(payload)
       .startOf("week")
-      .format("DDMMY");
+      .format("DDMMYYYY");
     socket.emit("fetchEditItems", collection);
   };
 }

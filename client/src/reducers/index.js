@@ -3,14 +3,10 @@ import {
   HANDLE_FORM_CHANGE,
   SELECT_DATE,
   SELECT_EDIT_DATE,
-  FETCH_PROGRAMARI_SUCCESS,
   FETCH_PROGRAMARI_STARTED,
-  FETCH_EDIT_PROGRAMARI_SUCCESS,
   FETCH_EDIT_PROGRAMARI_STARTED,
-  ADD_PROGRAMARE_SUCCESS,
   ADD_PROGRAMARE_STARTED,
   DELETE_PROGRAMARE_STARTED,
-  DELETE_PROGRAMARE_SUCCESS,
   TOGGLE_ADD_MODAL,
   ADD_HOURS_ARRAY,
   USER_LOGGING_STARTED,
@@ -26,7 +22,7 @@ const initialState = {
   modalState: false,
   deleting: false,
   adding: false,
-  loading: true,
+  loading: false,
   selectedDate: new Date(),
   formChange: {},
   selectedProgramare: { nume: "", prenume: "", telefon: "" },
@@ -76,9 +72,7 @@ function rootReducer(state = initialState, action) {
     case DELETE_PROGRAMARE_STARTED: {
       return Object.assign({}, state, { deleting: true });
     }
-    case DELETE_PROGRAMARE_SUCCESS: {
-      return Object.assign({}, state, { deleting: false });
-    }
+
     case ADD_PROGRAMARE_STARTED: {
       return Object.assign({}, state, { adding: true });
     }
@@ -98,21 +92,8 @@ function rootReducer(state = initialState, action) {
       return Object.assign({}, state, { selectedDate: action.payload });
     }
 
-    case FETCH_PROGRAMARI_SUCCESS: {
-      return Object.assign(
-        {},
-        state,
-        { programari: action.payload },
-        { loading: false }
-      );
-    }
-
     case FETCH_PROGRAMARI_STARTED: {
       return Object.assign({}, state, { loading: true });
-    }
-
-    case FETCH_EDIT_PROGRAMARI_SUCCESS: {
-      return Object.assign({}, state, { programariEdit: action.payload });
     }
 
     case FETCH_EDIT_PROGRAMARI_STARTED: {
@@ -122,12 +103,6 @@ function rootReducer(state = initialState, action) {
     case ADD_HOURS_ARRAY: {
       const newState = Object.assign({}, state, { hoursArray: "" });
       return Object.assign({}, newState, { hoursArray: action.payload });
-    }
-
-    case ADD_PROGRAMARE_SUCCESS: {
-      return Object.assign({}, state, {
-        adding: false
-      });
     }
 
     case SET_ERROR: {

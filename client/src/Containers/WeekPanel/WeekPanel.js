@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HourRows from "../../Components/HourRows/HourRows";
-import moment from "moment";
 import "./WeekPanel.css";
 import { connect } from "react-redux";
 import { hoursArray } from "../../Components/DataTables/hoursArray";
@@ -11,6 +10,11 @@ import AddIcon from "@material-ui/icons/Add";
 import Loop from "@material-ui/icons/Loop";
 import { toggleAddModal } from "../../actions/index";
 import TableBackground from "../../Components/TableBackground/TableBackground";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+import weekday from "dayjs/plugin/weekday";
+dayjs.locale(ro);
+dayjs.extend(weekday);
 
 const mapStateToProps = state => {
   return {
@@ -26,12 +30,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 const WeekPanel = props => {
-  const [weekNumber, setWeekNumber] = useState(moment());
+  const [weekNumber, setWeekNumber] = useState(dayjs());
 
   useEffect(() => {
-    const weekStart = moment(weekNumber)
+    const weekStart = dayjs(weekNumber)
       .startOf("week")
-      .format("DDMMY");
+      .format("DDMMYYYY");
     const socket = io.connect("/");
     socket.emit("fetchItems", weekStart);
   }, [weekNumber]);
@@ -53,7 +57,7 @@ const WeekPanel = props => {
   const cabinete = ["1", "2", "3"];
   for (let i = 0; i < 5; ++i) {
     days.push(
-      moment(weekNumber, "week")
+      dayjs(weekNumber, "week")
         .startOf("week")
         .add(i, "d")
         .format("dddd DD.MM")
@@ -94,10 +98,11 @@ const WeekPanel = props => {
   });
 
   const arrayProgramari = props.programari.map(programare => {
-    let hourIndex = hoursArray.indexOf(Number(programare.ora)) + 1;
+    let hourIndex = hoursArray.indexOf(programare.ora) + 2;
     let cabinetIndex =
-      (Number(programare.cabinet) + 1) *
-      moment(programare.selectedDate).weekday();
+      Number(programare.cabinet) +
+      3 * dayjs(programare.selectedDate).weekday() +
+      1;
     let durata = programare.durata;
     let bgColor = `bg-${programare.medic}`;
     let pacientName = "";
@@ -197,7 +202,7 @@ const WeekPanel = props => {
               fontSize: "1.5rem"
             }}
             onClick={() => {
-              setWeekNumber(moment(weekNumber).subtract(1, "week"));
+              setWeekNumber(dayjs(weekNumber).subtract(1, "week"));
             }}
           >
             &#8592;
@@ -206,14 +211,14 @@ const WeekPanel = props => {
             style={{ color: "#fafafa", cursor: "default" }}
             className="f3 pa2"
           >
-            {moment(weekNumber)
+            {dayjs(weekNumber)
               .startOf("week")
-              .format("DD.MM.Y")}{" "}
+              .format("DD.MM.YYYY")}{" "}
             -{" "}
-            {moment(weekNumber)
+            {dayjs(weekNumber)
               .startOf("week")
               .add(4, "d")
-              .format("DD.MM.Y")}
+              .format("DD.MM.YYYY")}
           </div>
           <button
             style={{
@@ -223,7 +228,7 @@ const WeekPanel = props => {
               fontSize: "1.5rem"
             }}
             onClick={() => {
-              setWeekNumber(moment(weekNumber).add(1, "week"));
+              setWeekNumber(dayjs(weekNumber).add(1, "week"));
             }}
           >
             &#8594;
@@ -249,7 +254,4 @@ const WeekPanel = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WeekPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(WeekPanel);

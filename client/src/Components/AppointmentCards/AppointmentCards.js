@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { hoursArray } from "../../Components/DataTables/hoursArray";
 import "./AppointmentCards.css";
 import { toggleAddModal } from "../../actions/index";
-import moment from "moment";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+dayjs.locale(ro);
 
 const mapStateToProps = state => {
   return {
@@ -50,10 +52,10 @@ const AppointmentCards = props => {
 
   const array = programari.map(programare => {
     if (
-      moment(programare.selectedDate).format("DDMM") ===
-      moment(selectedDate).format("DDMM")
+      dayjs(programare.selectedDate).format("DDMM") ===
+      dayjs(selectedDate).format("DDMM")
     ) {
-      let hourIndex = hoursArray.indexOf(Number(programare.ora)) + 1;
+      let hourIndex = hoursArray.indexOf(programare.ora) + 1;
       let cabinetIndex = Number(programare.cabinet) + 1;
       let durata = programare.durata;
       let bgColor = `bg-${programare.medic}`;
@@ -122,7 +124,4 @@ const AppointmentCards = props => {
   return <React.Fragment>{array}</React.Fragment>;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppointmentCards);
+export default connect(mapStateToProps, mapDispatchToProps)(AppointmentCards);

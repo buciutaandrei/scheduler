@@ -25,8 +25,11 @@ import "./AddAppointment.css";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import MomentLocaleUtils from "react-day-picker/moment";
-import moment from "moment";
-import "moment/locale/ro";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
+dayjs.locale(ro);
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -106,24 +109,29 @@ const AddAppointment = props => {
     let availableHoursArray = [];
     let availableHoursList = [];
     props.programariEdit.map(programare => {
-      if (value === programare.cabinet) {
-        const startTime = moment(programare.ora, "Hmm").format("HH:mm");
+      if (
+        value === programare.cabinet &&
+        dayjs(selectedDate).format("DDMM") ===
+          dayjs(programare.selectedDate).format("DDMM")
+      ) {
+        const startTime = dayjs(programare.ora, "HHmm").format("HH:mm");
         for (let i = 0; i < programare.durata; i++) {
-          const busyHours = moment(startTime, "HH:mm")
+          const busyHours = dayjs(startTime, "HH:mm")
             .add(i * 0.5, "h")
-            .format("Hmm");
-          busyHoursArray = busyHoursArray.concat(Number(busyHours));
+            .format("HHmm");
+          busyHoursArray = busyHoursArray.concat(busyHours);
         }
       }
       return null;
     });
+    console.log(busyHoursArray);
 
     if (selectedProgramare.edit) {
       theseHours = [];
       for (let i = 0; i < selectedProgramare.durata; i++) {
         theseHours.push(
           Number(
-            moment(selectedProgramare.ora, "Hmm")
+            dayjs(selectedProgramare.ora, "HHmm")
               .add(0.5 * i, "h")
               .format("HHmm")
           )
@@ -140,8 +148,8 @@ const AddAppointment = props => {
 
     availableHoursArray.map(hour => {
       const item = {
-        label: moment(hour, "Hmm").format("HH:mm"),
-        value: moment(hour, "Hmm").format("Hmm")
+        label: dayjs(hour, "HHmm").format("HH:mm"),
+        value: dayjs(hour, "HHmm").format("HHmm")
       };
       availableHoursList.push(item);
       return null;
@@ -151,7 +159,7 @@ const AddAppointment = props => {
 
   const addProgramare = () => {
     let programare = props.selectedProgramare;
-    let index = `${programare.cabinet}${moment(programare.ora, "Hmm").format(
+    let index = `${programare.cabinet}${dayjs(programare.ora, "HHmm").format(
       "HHmm"
     )}`;
     programare = Object.assign({}, programare, {
@@ -323,4 +331,4 @@ const AddAppointment = props => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddAppointment);
+)(React.memo(AddAppointment));

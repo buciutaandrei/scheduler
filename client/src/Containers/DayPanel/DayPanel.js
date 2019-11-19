@@ -103,7 +103,4 @@ const DayPanel = props => {
   );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(DayPanel);
+export default connect(null, mapDispatchToProps)(DayPanel);

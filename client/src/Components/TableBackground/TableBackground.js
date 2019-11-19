@@ -35,4 +35,4 @@ const TableBackground = () => {
 
   return <React.Fragment>{array}</React.Fragment>;
 };
-export default TableBackground;
+export default React.memo(TableBackground);

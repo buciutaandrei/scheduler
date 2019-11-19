@@ -7,9 +7,9 @@ const passport = require("passport");
 const users = require("./api/users");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
-const moment = require("moment");
-require("moment/locale/ro");
-moment.locale("ro");
+const dayjs = require("dayjs");
+require("dayjs/locale/ro");
+dayjs.locale("ro");
 const path = require("path");
 
 require("dotenv").config();
@@ -69,29 +69,30 @@ MongoClient.connect(
       });
 
       socket.on("addItems", input => {
-        let date = moment(input.selectedDate)
+        console.log(input);
+        let date = dayjs(input.selectedDate)
           .startOf("week")
-          .format("DDMMY");
+          .format("DDMMYYYY");
         db.collection(date)
           .insertOne(input)
           .then(data => io.sockets.emit("refresh", date));
       });
 
       socket.on("deleteItems", input => {
-        let date = moment(input.selectedDate)
+        let date = dayjs(input.selectedDate)
           .startOf("week")
-          .format("DDMMY");
+          .format("DDMMYYYY");
         db.collection(date)
           .deleteOne({ index: input.id })
           .then(data => io.sockets.emit("refresh", date));
       });
 
       socket.on("fetchWeek", input => {
-        let firstDate = moment(input, "week").startOf("week");
+        let firstDate = dayjs(input, "week").startOf("week");
         for (i = 1; i < 6; i++) {
-          let date = moment(firstDate)
+          let date = dayjs(firstDate)
             .add(i, "d")
-            .format("DDMMY");
+            .format("DDMMYYYY");
           db.collection(date).find({}, (err, cursor) => {
             cursor.toArray((err, result) => {
               io.sockets.emit("weekData", result);

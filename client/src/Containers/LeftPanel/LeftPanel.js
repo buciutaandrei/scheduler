@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const LeftPanel = props => {
-  const [drawer, toggleDrawer] = useState(false);
+  const [drawer, toggleDrawer] = useState(true);
 
   return (
     <SwipeableDrawer
@@ -49,7 +49,4 @@ const LeftPanel = props => {
   );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(LeftPanel);
+export default connect(null, mapDispatchToProps)(LeftPanel);

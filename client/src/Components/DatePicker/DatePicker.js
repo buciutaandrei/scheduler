@@ -39,7 +39,4 @@ const DatePicker = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DatePicker);
+export default connect(mapStateToProps, mapDispatchToProps)(DatePicker);

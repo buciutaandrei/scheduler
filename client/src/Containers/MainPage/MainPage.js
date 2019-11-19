@@ -11,7 +11,6 @@ import WeekPanel from "../WeekPanel/WeekPanel";
 import DayPanel from "../DayPanel/DayPanel";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
-import moment from "moment";
 import {
   deleteProgramare,
   toggleAddModal,
@@ -20,6 +19,9 @@ import {
   fetchProgramari,
   selectDate
 } from "../../actions/index";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+dayjs.locale(ro);
 
 const mapStateToProps = state => {
   return {
@@ -42,14 +44,14 @@ const mapDispatchToProps = dispatch => {
 
 const MainPage = props => {
   useEffect(() => {
-    const firstDay = moment(props.selectedDate).startOf("week");
+    const firstDay = dayjs(props.selectedDate).startOf("week");
     props.fetchProgramari(firstDay);
     const socket = io.connect("/");
     socket.on("dataFetch", input => {
       props.setProgramari(input);
     });
     socket.on("refresh", input => {
-      const data = moment(input, "DDMMY").format();
+      const data = dayjs(input, "DDMMYYYY").format();
       props.fetchProgramari(data);
     });
     socket.on("dataFetchEdit", input => {
@@ -103,7 +105,4 @@ const MainPage = props => {
   }
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

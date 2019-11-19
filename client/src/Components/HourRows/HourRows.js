@@ -1,7 +1,9 @@
 import React from "react";
 import { hoursArray } from "../DataTables/hoursArray";
 import "./HourRows.css";
-import moment from "moment";
+import dayjs from "dayjs";
+import ro from "dayjs/locale/ro";
+dayjs.locale(ro);
 
 const hourRows = () => {
   const array = hoursArray.map(hour => {
@@ -9,7 +11,7 @@ const hourRows = () => {
     if (hour === 0) {
       hourText = null;
     } else {
-      hourText = moment(hour, "Hmm").format("HH:mm");
+      hourText = dayjs(hour, "Hmm").format("HH:mm");
     }
 
     return (
@@ -37,4 +39,4 @@ const hourRows = () => {
   return <React.Fragment>{array}</React.Fragment>;
 };
 
-export default hourRows;
+export default React.memo(hourRows);
