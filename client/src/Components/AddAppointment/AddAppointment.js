@@ -124,7 +124,6 @@ const AddAppointment = props => {
       }
       return null;
     });
-    console.log(busyHoursArray);
 
     if (selectedProgramare.edit) {
       theseHours = [];
@@ -159,9 +158,9 @@ const AddAppointment = props => {
 
   const addProgramare = () => {
     let programare = props.selectedProgramare;
-    let index = `${programare.cabinet}${dayjs(programare.ora, "HHmm").format(
-      "HHmm"
-    )}`;
+    let index = `${dayjs(programare.selectedDate).format("DD")}${
+      programare.cabinet
+    }${dayjs(programare.ora, "HHmm").format("HHmm")}`;
     programare = Object.assign({}, programare, {
       index: index,
       selectedDate: selectedDate
