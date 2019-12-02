@@ -8,6 +8,7 @@ import Loop from "@material-ui/icons/Loop";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { toggleAddModal } from "../../actions/index";
+import HourRows2 from "../../Components/HourRows/HourRows2";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -55,18 +56,28 @@ const DayPanel = props => {
         <AddIcon style={{ fontSize: "2.5rem" }} />
       </Fab>
       <div className="tableWrapper">
-        <div
+        {/* <div
           style={{
             position: "absolute",
             width: "100%",
             height: "100%",
             zIndex: "1",
-            marginTop: "1.95rem"
+            marginTop: "3.4vh"
           }}
         >
           <TableBackground />
-        </div>
+        </div> */}
         <HourRows />
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            marginTop: "3.5vh"
+          }}
+        >
+          <HourRows2 />
+        </div>
         <div
           className="f4 tc"
           style={{

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainPage.css";
 import "tachyons";
 import { CssBaseline } from "@material-ui/core";
@@ -17,10 +17,12 @@ import {
   setAppointments,
   setAppointmentsEdit,
   fetchAppointments,
-  selectDate
+  selectDate,
+  setZileLibere
 } from "../../actions/index";
 import dayjs from "dayjs";
 import ro from "dayjs/locale/ro";
+import DoctorSchedule from "../../Components/DoctorSchedule/DoctorSchedule";
 dayjs.locale(ro);
 
 const mapStateToProps = state => {
@@ -48,6 +50,7 @@ const MainPage = props => {
   useEffect(() => {
     const firstDay = dayjs(props.selectedDate).startOf("week");
     props.fetchAppointments(firstDay);
+
     const socket = io.connect("/");
     socket.on("dataFetch", input => {
       props.setAppointments(input);
@@ -72,7 +75,7 @@ const MainPage = props => {
       window.location.reload(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [props.selectedDate]);
 
   if (props.error) {
     const errorArray = props.errorContent.map(eroare => {
@@ -95,6 +98,7 @@ const MainPage = props => {
                 <WeekPanel />
               </Route>
             </Switch>
+            <DoctorSchedule />
             <AddAppointment />
           </div>
         </LoadingOverlay>
@@ -103,4 +107,7 @@ const MainPage = props => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(MainPage));

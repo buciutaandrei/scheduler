@@ -52,7 +52,8 @@ const mapStateToProps = state => {
     selectedDate: state.selectedDate,
     adding: state.adding,
     appointmentsEdit: state.appointmentsEdit,
-    hoursArray: state.hoursArray
+    hoursArray: state.hoursArray,
+    zileLibere: state.zileLibere
   };
 };
 
@@ -218,6 +219,7 @@ const AddAppointment = props => {
         open={modalState}
         toggle={() => toggleAddModal(selectedAppointment)}
         size="lg"
+        style={{ zIndex: 10 }}
       >
         <ModalHeader>Appointment</ModalHeader>
         <ModalBody style={{ padding: "0" }}>
@@ -228,7 +230,7 @@ const AddAppointment = props => {
                 locale="ro"
                 selectedDays={selectedDate}
                 onDayClick={event => handleDateSelect(event)}
-                disabledDays={{ daysOfWeek: [0, 6] }}
+                disabledDays={[...props.zileLibere, { daysOfWeek: [0, 6] }]}
               />
             </div>
             <div className="flex flex-row" style={{ width: "min-content" }}>

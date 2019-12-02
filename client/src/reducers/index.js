@@ -15,7 +15,8 @@ import {
   LOGGING_OUT,
   SET_APPOINTMENTS,
   SET_APPOINTMENTS_EDIT,
-  SET_ERROR
+  SET_ERROR,
+  SET_ZILE_LIBERE
 } from "../constants/action-types";
 
 const initialState = {
@@ -30,7 +31,8 @@ const initialState = {
   loggedIn: false,
   loginErrors: {},
   appointmentsEdit: [],
-  error: false
+  error: false,
+  zileLibere: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -123,6 +125,10 @@ function rootReducer(state = initialState, action) {
 
     case SET_APPOINTMENTS_EDIT: {
       return Object.assign({}, state, { appointmentsEdit: action.payload });
+    }
+
+    case SET_ZILE_LIBERE: {
+      return Object.assign({}, state, { zileLibere: action.payload });
     }
 
     default:

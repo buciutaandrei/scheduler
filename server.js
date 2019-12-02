@@ -125,7 +125,7 @@ MongoClient.connect(
         .then(data => res.send(data));
     });
 
-    let port = process.env.PORT || 3001;
+    let port = process.env.PORT || 5000;
 
     server.listen(port, () => {
       console.log("server started");

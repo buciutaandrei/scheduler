@@ -16,7 +16,8 @@ import {
   LOGGING_OUT,
   SET_APPOINTMENTS,
   SET_APPOINTMENTS_EDIT,
-  SET_ERROR
+  SET_ERROR,
+  SET_ZILE_LIBERE
 } from "../constants/action-types";
 import setAuthToken from "../Containers/LoginPage/setAuthToken";
 import jwt_decode from "jwt-decode";
@@ -123,4 +124,8 @@ export function fetchEditAppointments(payload) {
       .format("DDMMYYYY");
     socket.emit("fetchEditItems", collection);
   };
+}
+
+export function setZileLibere(payload) {
+  return { type: SET_ZILE_LIBERE, payload };
 }

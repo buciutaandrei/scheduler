@@ -10,3 +10,11 @@
     flex-direction: column;
   }
 }
+
+.modal {
+  z-index: 2000;
+}
+
+.modal-backdrop {
+  z-index: 1900;
+}

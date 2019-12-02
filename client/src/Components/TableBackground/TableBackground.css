@@ -3,5 +3,5 @@
 }
 
 .trBackground:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: rgba(230, 230, 230, 0.9);
 }

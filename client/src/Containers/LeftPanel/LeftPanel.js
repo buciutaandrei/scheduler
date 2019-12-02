@@ -46,7 +46,7 @@ const LeftPanel = props => {
           height: "2rem",
           color: "#fafafa",
           letterSpacing: "2px",
-          zIndex: "20"
+          zIndex: "1"
         }}
         onClick={props.loggingOut}
       >
@@ -54,7 +54,6 @@ const LeftPanel = props => {
       </Button>
     </div>
   );
-  console.log(classes.drawer);
 
   return (
     <div id="drawerId" className={classes.drawer}>

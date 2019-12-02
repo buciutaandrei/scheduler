@@ -5,11 +5,11 @@
   background-color: #357edd;
   height: 100%;
   width: 23rem;
-  z-index: 10;
+  z-index: 1;
 }
 
 .datePickerWrapper {
   background-color: #fafafa;
   border-radius: 10%;
-  z-index: 20;
+  z-index: 2;
 }

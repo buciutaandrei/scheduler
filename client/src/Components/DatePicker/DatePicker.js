@@ -19,7 +19,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    selectedDate: state.selectedDate
+    selectedDate: state.selectedDate,
+    zileLibere: state.zileLibere
   };
 };
 
@@ -36,7 +37,7 @@ const DatePicker = props => {
         locale="ro"
         selectedDays={new Date(props.selectedDate)}
         onDayClick={event => handleDateSelect(event)}
-        disabledDays={{ daysOfWeek: [0, 6] }}
+        disabledDays={[...props.zileLibere, { daysOfWeek: [0, 6] }]}
       />
     </div>
   );

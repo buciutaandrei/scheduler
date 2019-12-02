@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HourRows from "../../Components/HourRows/HourRows";
-import "./WeekPanel.css";
 import { connect } from "react-redux";
 import { hoursArray } from "../../Components/DataTables/hoursArray";
 import Fab from "@material-ui/core/Fab";
@@ -22,7 +21,8 @@ dayjs.extend(weekday);
 const mapStateToProps = state => {
   return {
     appointments: state.appointments,
-    selectedDate: state.selectedDate
+    selectedDate: state.selectedDate,
+    zileLibere: state.zileLibere
   };
 };
 
@@ -58,6 +58,7 @@ const WeekPanel = props => {
 
   const days = [];
   const rooms = ["1", "2", "3"];
+
   for (let i = 0; i < 5; ++i) {
     days.push(
       dayjs(weekNumber, "week")
@@ -66,13 +67,15 @@ const WeekPanel = props => {
         .format("dddd DD.MM")
     );
   }
+
   const daysHeader = days.map((days, i) => {
     return (
       <div
         key={days}
-        className="tc f4 pa2"
+        className="tc f4"
         style={{
           zIndex: 10,
+          height: "5vh",
           gridColumn: `${i * 3 + 2} / span 3`,
           gridRowStart: "1"
         }}
@@ -82,14 +85,16 @@ const WeekPanel = props => {
       </div>
     );
   });
+
   const roomsHeader = days.map((days, i) => {
     const roomsList = rooms.map((room, j) => {
       return (
         <div
           key={`${room}${days}`}
-          className="tc f5 pa2"
+          className="tc f5"
           style={{
             zIndex: 10,
+            height: "5vh",
             gridColumnStart: `${i * 3 + 2 + j}`,
             gridRowStart: "2"
           }}
@@ -100,6 +105,46 @@ const WeekPanel = props => {
     });
     return roomsList;
   });
+
+  const ZileLibere = () => {
+    let zileSaptamana = [];
+    for (let i = 0; i < 5; i++) {
+      zileSaptamana = zileSaptamana.concat(
+        dayjs(weekNumber)
+          .startOf("week")
+          .add(i, "day")
+          .format("DD.MM.YYYY")
+      );
+    }
+
+    let zileLibereActuale = [];
+
+    for (let i = 0; i < zileSaptamana.length; i++) {
+      props.zileLibere.map(zi => {
+        if (zileSaptamana[i] === dayjs(zi).format("DD.MM.YYYY")) {
+          zileLibereActuale = zileLibereActuale.concat(zi);
+        }
+        return null;
+      });
+    }
+
+    return zileLibereActuale.map(zi => {
+      const weekDay = dayjs(zi).weekday();
+      return (
+        <div
+          key={zi}
+          style={{
+            gridColumnStart: 3 * weekDay - 1,
+            gridColumnEnd: 3 * weekDay + 2,
+            gridRow: 2,
+            gridRowEnd: 28,
+            backgroundColor: "rgba(230, 230, 230, 0.7)",
+            zIndex: 500
+          }}
+        ></div>
+      );
+    });
+  };
 
   const arrayAppointments = props.appointments.map(appointment => {
     let hourIndex = hoursArray.indexOf(appointment.ora) + 2;
@@ -124,7 +169,9 @@ const WeekPanel = props => {
           gridColumn: roomIndex,
           gridRow: `${hourIndex} / span ${timespan}`,
           zIndex: "9",
-          overflow: "hidden"
+          overflow: "hidden",
+          marginTop: "3px",
+          marginBottom: "3px"
         }}
         onClick={() => handleEdit(appointment)}
       >
@@ -142,22 +189,23 @@ const WeekPanel = props => {
           left: 0,
           right: 0,
           backgroundColor: "#357edd",
-          zIndex: "-1"
+          zIndex: "-1",
+          height: "5vh"
         }}
-        className="shadow-3 topBar"
+        className="shadow-3"
       ></div>
       <div
         style={{
           position: "absolute",
           width: "90%",
           zIndex: "1",
-          marginTop: "5rem",
+          marginTop: "11.1vh",
           alignSelf: "center"
         }}
       >
         <TableBackground />
       </div>
-      <div className="weekTableWrapper">
+      <div style={{ maxWidth: "90%", flex: 1, alignSelf: "flex-start" }}>
         <Link to="/">
           <Fab
             style={{
@@ -245,6 +293,7 @@ const WeekPanel = props => {
             gridTemplateColumns: "5% repeat(auto-fill, 6.33%)"
           }}
         >
+          <ZileLibere />
           {daysHeader}
           {roomsHeader}
           {arrayAppointments}

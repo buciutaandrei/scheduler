@@ -20,6 +20,63 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const programDrA = [
+  {
+    from: "10122019",
+    to: "17122019",
+    room: "1",
+    beginHour: "0830",
+    endHour: "1230"
+  },
+  {
+    from: "10122019",
+    to: "17122019",
+    room: "3",
+    beginHour: "1530",
+    endHour: "1930"
+  }
+];
+
+const doctorAvailable = props => {
+  let array = [];
+  const program = programDrA.map(program => {
+    const from = dayjs(program.from, "DDMMYYYY");
+    const to = dayjs(program.to, "DDMMYYYY");
+    const current = dayjs(props.selectedDate);
+    const isBefore =
+      to.year() >= current.year() &&
+      to.month() >= current.month() &&
+      to.date() >= current.date();
+    const isAfter =
+      from.year() <= current.year() &&
+      from.month() <= current.month() &&
+      from.date() <= current.date();
+    const isBetween = isBefore && isAfter;
+
+    if (isBetween) {
+      array = array.concat(program);
+    }
+  });
+  console.log(array);
+  const divArray = array.map(data => {
+    let hourIndexStart = hoursArray.indexOf(data.beginHour) + 1;
+    let hourIndexEnd = hoursArray.indexOf(data.endHour) + 1;
+    let roomIndex = Number(data.room) + 1;
+    return (
+      <div
+        style={{
+          gridColumn: roomIndex,
+          gridRowStart: `${hourIndexStart}`,
+          gridRowEnd: `${hourIndexEnd}`,
+          zIndex: 2,
+          backgroundColor: "rgba(229,115,115,0.3)"
+        }}
+      ></div>
+    );
+  });
+  return divArray;
+};
+
 const AppointmentCards = props => {
   const { appointments, selectedDate } = props;
 
@@ -32,7 +89,6 @@ const AppointmentCards = props => {
         room: ""
       })
     );
-    console.log(event);
   };
 
   const doctorName = data => {
@@ -68,14 +124,12 @@ const AppointmentCards = props => {
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gridGap: "1px",
-          marginTop: "-3px",
           alignContent: "center",
           height: "100%"
         };
       } else if (timespan === "2") {
         style = {
           alignContent: "center",
-          marginTop: "-3px",
           display: "grid",
           gridTemplateColumns: "50% 50%",
           height: "100%"
@@ -85,7 +139,6 @@ const AppointmentCards = props => {
         style = {
           display: "flex",
           flexDirection: "column",
-          marginTop: "-3px",
           justifyContent: "center",
           height: "100%"
         };
@@ -99,7 +152,9 @@ const AppointmentCards = props => {
           style={{
             gridColumn: roomIndex,
             gridRow: `${hourIndex} / span ${timespan}`,
-            zIndex: "9"
+            zIndex: "9",
+            marginTop: "5px",
+            marginBottom: "5px"
           }}
           onClick={() => handleEdit(appointment)}
         >
@@ -122,7 +177,15 @@ const AppointmentCards = props => {
       return null;
     }
   });
-  return <React.Fragment>{array}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {array}
+      {doctorAvailable(props)}
+    </React.Fragment>
+  );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppointmentCards);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(AppointmentCards));
